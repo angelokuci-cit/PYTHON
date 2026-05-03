@@ -32,6 +32,7 @@ def horizontal_range(v0: float, angle_rad: float, g: float) -> float:
 def compute_trajectory(
     v0: float, angle_rad: float, g: float, samples: int
 ) -> tuple[list[float], list[float], list[float]]:
+    """Return time samples and x/y positions for the projectile."""
     flight_time = time_of_flight(v0, angle_rad, g)
     times = [flight_time * step / samples for step in range(samples + 1)]
     cos_angle = math.cos(angle_rad)
@@ -46,6 +47,7 @@ def angle_range_analysis(
     g: float,
     angles_deg: Iterable[int],
 ) -> tuple[list[int], list[float], int, float]:
+    """Compute ranges for angles and return the best angle and range."""
     angles = []
     ranges = []
     for angle in angles_deg:
@@ -69,6 +71,7 @@ def plot_results(
     best_range: float,
     save_path: str | None,
 ) -> None:
+    """Plot trajectory, position vs time, and range analysis."""
     if save_path:
         import matplotlib
 
