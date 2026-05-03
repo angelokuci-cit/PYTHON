@@ -14,12 +14,14 @@ def time_of_flight(v0: float, angle_rad: float, g: float) -> float:
         raise ValueError("Gravitational acceleration must be positive.")
     if vertical_velocity <= 0:
         raise ValueError("Launch angle must produce a positive vertical velocity.")
-    return vertical_velocity / g
+    return (2 * vertical_velocity) / g
 
 
 def max_height(v0: float, angle_rad: float, g: float) -> float:
+    if g <= 0:
+        raise ValueError("Gravitational acceleration must be positive.")
     vertical_velocity = v0 * math.sin(angle_rad)
-    return (vertical_velocity ** 2) / (4 * g)
+    return (vertical_velocity ** 2) / (2 * g)
 
 
 def horizontal_range(v0: float, angle_rad: float, g: float) -> float:
@@ -35,7 +37,7 @@ def compute_trajectory(
     cos_angle = math.cos(angle_rad)
     sin_angle = math.sin(angle_rad)
     x_vals = [v0 * cos_angle * time for time in times]
-    y_vals = [v0 * sin_angle * time - g * time**2 for time in times]
+    y_vals = [v0 * sin_angle * time - 0.5 * g * time**2 for time in times]
     return times, x_vals, y_vals
 
 
@@ -51,8 +53,10 @@ def angle_range_analysis(
             angle_rad = math.radians(angle)
             angles.append(angle)
             ranges.append(horizontal_range(v0, angle_rad, g))
-    max_index = max(range(len(ranges)), key=ranges.__getitem__)
-    return angles, ranges, angles[max_index], ranges[max_index]
+    if not ranges:
+        raise ValueError("No valid angles provided for range analysis.")
+    best_range, best_angle = max(zip(ranges, angles))
+    return angles, ranges, best_angle, best_range
 
 
 def plot_results(
@@ -111,7 +115,7 @@ def plot_results(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Simulate projectile motion using x(t) = v0 cos θ t and y(t) = v0 sin θ t - g t²."
+        description="Simulate projectile motion using x(t) = v0 cos θ t and y(t) = v0 sin θ t - ½ g t²."
     )
     parser.add_argument("--v0", type=float, default=50.0, help="Initial velocity (m/s).")
     parser.add_argument("--angle", type=float, default=45.0, help="Launch angle (degrees).")
