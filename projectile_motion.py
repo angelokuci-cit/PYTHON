@@ -55,7 +55,7 @@ def angle_range_analysis(
             ranges.append(horizontal_range(v0, angle_rad, g))
     if not ranges:
         raise ValueError("No valid angles provided for range analysis.")
-    best_range, best_angle = max(zip(ranges, angles))
+    best_angle, best_range = max(zip(angles, ranges), key=lambda pair: pair[1])
     return angles, ranges, best_angle, best_range
 
 
