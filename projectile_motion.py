@@ -15,8 +15,10 @@ def time_of_flight(v0: float, angle_rad: float, g: float) -> float:
     vertical_velocity = v0 * math.sin(angle_rad)
     if g <= 0:
         raise ValueError("Gravitational acceleration must be positive.")
-    if vertical_velocity <= 0:
-        raise ValueError("Launch angle must produce a positive vertical velocity.")
+    if vertical_velocity < 0:
+        raise ValueError("Launch angle must produce a non-negative vertical velocity.")
+    if vertical_velocity == 0:
+        return 0.0
     return (2 * vertical_velocity) / g
 
 
@@ -54,7 +56,7 @@ def angle_range_analysis(
     angles = []
     ranges = []
     for angle in angles_deg:
-        if MIN_ANGLE_DEG < angle < MAX_ANGLE_DEG:
+        if MIN_ANGLE_DEG <= angle <= MAX_ANGLE_DEG:
             angle_rad = math.radians(angle)
             angles.append(angle)
             ranges.append(horizontal_range(v0, angle_rad, g))
@@ -152,7 +154,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if not (MIN_ANGLE_DEG < args.angle < MAX_ANGLE_DEG):
+    if not (MIN_ANGLE_DEG <= args.angle <= MAX_ANGLE_DEG):
         raise ValueError(
             f"Angle must be between {MIN_ANGLE_DEG} and {MAX_ANGLE_DEG} degrees."
         )
