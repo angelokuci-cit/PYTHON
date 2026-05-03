@@ -52,7 +52,10 @@ def angle_range_analysis(
     g: float,
     angles_deg: Iterable[int],
 ) -> tuple[list[int], list[float], int, float]:
-    """Compute ranges for angles and return the best angle and range."""
+    """Compute ranges for angles.
+
+    Returns the angle list, range list, best angle, and best range.
+    """
     angles = []
     ranges = []
     for angle in angles_deg:
@@ -123,7 +126,7 @@ def plot_results(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Simulate projectile motion using x(t) = v0 cos θ t and y(t) = v0 sin θ t - 1/2 g t²."
+        description="Simulate projectile motion using x(t) = v0 cos θ t and y(t) = v0 sin θ t - 1/2 g t^2."
     )
     parser.add_argument("--v0", type=float, default=50.0, help="Initial velocity (m/s).")
     parser.add_argument("--angle", type=float, default=45.0, help="Launch angle (degrees).")
