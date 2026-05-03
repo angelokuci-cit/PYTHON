@@ -115,7 +115,7 @@ def plot_results(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Simulate projectile motion using x(t) = v0 cos θ t and y(t) = v0 sin θ t - ½ g t²."
+        description="Simulate projectile motion using x(t) = v0 cos θ t and y(t) = v0 sin θ t - 1/2 g t²."
     )
     parser.add_argument("--v0", type=float, default=50.0, help="Initial velocity (m/s).")
     parser.add_argument("--angle", type=float, default=45.0, help="Launch angle (degrees).")
