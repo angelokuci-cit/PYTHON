@@ -45,7 +45,7 @@ def angle_range_analysis(
     v0: float,
     g: float,
     angles_deg: Iterable[int],
-) -> Tuple[list[int], list[float], int, float]:
+) -> tuple[list[int], list[float], int, float]:
     angles = []
     ranges = []
     for angle in angles_deg:
