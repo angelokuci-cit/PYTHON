@@ -7,6 +7,9 @@ import argparse
 import math
 from typing import Iterable
 
+MIN_ANGLE_DEG = 0
+MAX_ANGLE_DEG = 90
+
 
 def time_of_flight(v0: float, angle_rad: float, g: float) -> float:
     vertical_velocity = v0 * math.sin(angle_rad)
@@ -32,7 +35,7 @@ def horizontal_range(v0: float, angle_rad: float, g: float) -> float:
 def compute_trajectory(
     v0: float, angle_rad: float, g: float, samples: int
 ) -> tuple[list[float], list[float], list[float]]:
-    """Return time samples and x/y positions for the projectile."""
+    """Return (times, x_positions, y_positions) for the projectile."""
     flight_time = time_of_flight(v0, angle_rad, g)
     times = [flight_time * step / samples for step in range(samples + 1)]
     cos_angle = math.cos(angle_rad)
@@ -51,7 +54,7 @@ def angle_range_analysis(
     angles = []
     ranges = []
     for angle in angles_deg:
-        if 0 < angle < 90:
+        if MIN_ANGLE_DEG < angle < MAX_ANGLE_DEG:
             angle_rad = math.radians(angle)
             angles.append(angle)
             ranges.append(horizontal_range(v0, angle_rad, g))
@@ -149,8 +152,10 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    if not (0 < args.angle < 90):
-        raise ValueError("Angle must be between 0 and 90 degrees.")
+    if not (MIN_ANGLE_DEG < args.angle < MAX_ANGLE_DEG):
+        raise ValueError(
+            f"Angle must be between {MIN_ANGLE_DEG} and {MAX_ANGLE_DEG} degrees."
+        )
     if args.samples < 2:
         raise ValueError("Samples must be at least 2.")
 
