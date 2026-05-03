@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import math
-from typing import Iterable, Tuple
+from typing import Iterable
 
 
 def time_of_flight(v0: float, angle_rad: float, g: float) -> float:
@@ -31,7 +31,7 @@ def horizontal_range(v0: float, angle_rad: float, g: float) -> float:
 
 def compute_trajectory(
     v0: float, angle_rad: float, g: float, samples: int
-) -> Tuple[list[float], list[float], list[float]]:
+) -> tuple[list[float], list[float], list[float]]:
     flight_time = time_of_flight(v0, angle_rad, g)
     times = [flight_time * step / samples for step in range(samples + 1)]
     cos_angle = math.cos(angle_rad)
